@@ -4,9 +4,6 @@ import 'jspdf-autotable';
 import './App.css';
 
 
-
-
-
 const TIPURI_PODET = {
   'D1': 1.90,
   'D2': 2.90,
@@ -93,6 +90,12 @@ function App() {
     tipBeton: 'C12/15'
   });
 
+  const [rigolaDren, setRigolaDren] = useState({
+    latime: '',
+    inaltime: '',
+    tipBeton: 'C12/15'
+  });
+
   const [lungimePodet, setLungimePodet] = useState('');
   const [kmPodet, setKmPodet] = useState('');
   const [tipPodet, setTipPodet] = useState('D1');
@@ -101,6 +104,9 @@ function App() {
     volumFundatie: 0,
     volumElevatie: 0,
     volumCoronament: 0,
+    volumRigolaDren: 0,
+    volumUmpluturaDrenanta: 0,
+    volumDren: 0,
     volumTotal: 0,
     volumTotalDublu: 0,
     cofrajFundatie: 0,
@@ -119,6 +125,7 @@ function App() {
     const volumFundatie = fundatie.lungime * fundatie.latime * fundatie.inaltime;
     const volumElevatie = elevatie.lungime * elevatie.latime * elevatie.inaltime;
     const volumCoronament = coronament.inaltime * coronament.latime * TIPURI_PODET[tipPodet];
+    const volumRigola = rigolaDren.inaltime * rigolaDren.latime * lungimePodet;
     const volumTotal = volumFundatie + volumElevatie;
     const volumTotalDublu = volumTotal * 2;
 
@@ -135,10 +142,23 @@ function App() {
     const daleCamp = Math.ceil(lungimePodet - 2);
     const daleTotalBucati = daleMarginale + daleCamp;
 
+    // Calcul dren piatra
+    const volumDren = ((elevatie.inaltime - (elevatie.latime - 0.45) - rigolaDren.inaltime) * 0.50 * lungimePodet)
+
+    // Calcul umplutura drenanta din balast
+    const bazaMica = Number(rigolaDren.latime);
+    const bazaMare = (Number(rigolaDren.latime) + (elevatie.latime - 0.45) * 2).toFixed(2);
+    const inaltimeUmplutura = Number(elevatie.latime - 0.45);
+    const ariaUmpluturaDrenanta = (((Number(bazaMica) + Number(bazaMare)) * Number(inaltimeUmplutura)) / 2).toFixed(2);
+    const volumUmpluturaDrenanta = lungimePodet * ariaUmpluturaDrenanta;
+
     setRezultate({
       volumFundatie: volumFundatie.toFixed(2),
       volumElevatie: volumElevatie.toFixed(2),
       volumCoronament: volumCoronament.toFixed(2),
+      volumRigolaDren: volumRigola.toFixed(2),
+      volumDren: volumDren.toFixed(2),
+      volumUmpluturaDrenanta: volumUmpluturaDrenanta.toFixed(2),
       volumTotal: volumTotal.toFixed(2),
       volumTotalDublu: volumTotalDublu.toFixed(2),
       cofrajFundatie: cofrajFundatie.toFixed(2),
@@ -331,6 +351,46 @@ function App() {
           </div>
         </div>
 
+        <div className="section">
+          <h2>Rigola dren</h2>
+
+
+          <div className="input-group">
+            <label>Lățime (m):</label>
+            <input
+              type="number"
+              min="0"
+              step=".01"
+              value={rigolaDren.latime}
+              onChange={(e) => setRigolaDren({ ...rigolaDren, latime: e.target.value })}
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Înălțime (m):</label>
+            <input
+              type="number"
+              min="0"
+              step=".01"
+              value={rigolaDren.inaltime}
+              onChange={(e) => setRigolaDren({ ...rigolaDren, inaltime: e.target.value })}
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Tip Beton:</label>
+            <select
+              value={rigolaDren.tipBeton}
+              onChange={(e) => setRigolaDren({ ...rigolaDren, tipBeton: e.target.value })}
+              className="select-beton"
+            >
+              {TIPURI_BETON.map(tip => (
+                <option key={tip} value={tip}>{tip}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
 
 
         <button type="submit">Calculează</button>
@@ -407,6 +467,18 @@ function App() {
             <h3>Beton panta:</h3>
             <div className="waterproofing-results">
               <p>Beton {coronament.tipBeton}: <span>{(lungimePodet * TIPURI_PODET[tipPodet] * (0.05 + 0.18) / 2).toFixed(2)} m³ </span></p>
+            </div>
+            <h3>Rigola dren:</h3>
+            <div className="waterproofing-results">
+              <p>Beton {rigolaDren.tipBeton}: <span>{rezultate.volumRigolaDren} m³/buc x 2 buc ={rezultate.volumRigolaDren * 2} m³ </span></p>
+            </div>
+            <h3>Dren piatra bruta:</h3>
+            <div className="waterproofing-results">
+              <p>Piatra bruta negelica AND 513/2002: <span>{rezultate.volumDren} m³/buc x 2 buc ={rezultate.volumDren * 2} m³ </span></p>
+            </div>
+            <h3>Umplutura drenanta:</h3>
+            <div className="waterproofing-results">
+              <p>Umplutura din balast cu rol de filtru: <span>{rezultate.volumUmpluturaDrenanta} m³/buc x 2 buc ={rezultate.volumUmpluturaDrenanta * 2} m³ </span></p>
             </div>
           </div>
 
