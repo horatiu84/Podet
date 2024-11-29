@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/Podet/static/css/main.5c12710d.css",
+    "main.js": "/Podet/static/js/main.df6faacf.js",
+    "static/js/239.68ae9966.chunk.js": "/Podet/static/js/239.68ae9966.chunk.js",
+    "static/js/213.59d1d034.chunk.js": "/Podet/static/js/213.59d1d034.chunk.js",
+    "static/js/732.c1892b23.chunk.js": "/Podet/static/js/732.c1892b23.chunk.js",
+    "index.html": "/Podet/index.html",
+    "main.5c12710d.css.map": "/Podet/static/css/main.5c12710d.css.map",
+    "main.df6faacf.js.map": "/Podet/static/js/main.df6faacf.js.map",
+    "239.68ae9966.chunk.js.map": "/Podet/static/js/239.68ae9966.chunk.js.map",
+    "213.59d1d034.chunk.js.map": "/Podet/static/js/213.59d1d034.chunk.js.map",
+    "732.c1892b23.chunk.js.map": "/Podet/static/js/732.c1892b23.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5c12710d.css",
+    "static/js/main.df6faacf.js"
+  ]
+}
