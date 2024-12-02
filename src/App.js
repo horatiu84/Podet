@@ -18,7 +18,7 @@ function App() {
   const exportToPDF = () => {
     const doc = new jsPDF();
 
-    // Adaugă titlu
+    // Titlu
     doc.setFontSize(16);
     doc.text(`Cantitati Podet km ${kmPodet}`, 14, 20);
 
@@ -39,7 +39,10 @@ function App() {
       head: [['Element beton', 'Volum Beton', 'Tip Beton', 'Cofraj']],
       body: [
         ['Fundatie (2 buc)', `${(rezultate.volumFundatie * 2).toFixed(2)} m³`, fundatie.tipBeton, `${(rezultate.cofrajFundatie * 2).toFixed(2)} m²`],
-        ['Elevatie (2 buc)', `${(rezultate.volumElevatie * 2).toFixed(2)} m³`, elevatie.tipBeton, `${(rezultate.cofrajElevatie * 2).toFixed(2)} m²`]
+        ['Elevatie (2 buc)', `${(rezultate.volumElevatie * 2).toFixed(2)} m³`, elevatie.tipBeton, `${(rezultate.cofrajElevatie * 2).toFixed(2)} m²`],
+        ['Coronament (2 buc)', `${(rezultate.volumCoronament * 2).toFixed(2)} m³`, coronament.tipBeton, '-'],
+        ['Rigola dren (2 buc)', `${(rezultate.volumRigolaDren * 2).toFixed(2)} m³`, rigolaDren.tipBeton, '-'],
+        ['Beton panta', `${(lungimePodet * TIPURI_PODET[tipPodet] * (0.05 + 0.18) / 2).toFixed(2)} m³`, coronament.tipBeton, '-']
       ]
     });
 
@@ -60,10 +63,11 @@ function App() {
       head: [['Element', 'Cantitate']],
       body: [
         ['Strat Hidroizolatie', `${(lungimePodet * TIPURI_PODET[tipPodet]).toFixed(2)} m²`],
-        ['Protectie Hidroizolatie', `${(lungimePodet * TIPURI_PODET[tipPodet]).toFixed(2)} m²`],
+        ['Protectie Hidroizolatie 3cm BA8', `${(lungimePodet * TIPURI_PODET[tipPodet]).toFixed(2)} m²`],
         ['Hidroizolatie elevatii', `${(elevatie.lungime * elevatie.inaltime * 2).toFixed(2)} m²`],
         ['Parapet tip H2', '12 m'],
-        ['Coronament ', `${rezultate.volumCoronament * 2} m³`]
+        ['Dren piatra bruta', `${(rezultate.volumDren * 2).toFixed(2)} m³`],
+        ['Umplutura drenanta din balast', `${(rezultate.volumUmpluturaDrenanta * 2).toFixed(2)} m³`]
       ]
     });
 
